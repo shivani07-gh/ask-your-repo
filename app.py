@@ -1,6 +1,6 @@
-from repo_loader import fetch_repo_files
-from embeddings import create_vector_store
-from rag_pipeline import ask_question
+from backend.repo_loader import fetch_repo_files
+from backend.embeddings import create_vector_store
+from backend.rag_pipeline import ask_question
 
 repo_name = input("Enter repo (username/repo): ")
 
