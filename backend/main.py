@@ -5,7 +5,7 @@ from backend.repo_loader import fetch_repo_files
 from backend.embeddings import create_vector_store
 from backend.rag_pipeline import ask_question
 from fastapi.middleware.cors import CORSMiddleware
-
+from backend.roadmap_generator import generate_learning_roadmap
 
 
 app = FastAPI()
@@ -20,6 +20,7 @@ app.add_middleware(
 
 # Store vector DB temporarily
 vectorstore = None
+repo_files = None
 
 
 class RepoRequest(BaseModel):
@@ -43,7 +44,11 @@ def load_repo(data: RepoRequest):
 
     global vectorstore
 
+    global repo_files
+
     files = fetch_repo_files(data.repo_name)
+
+    repo_files = files
 
     vectorstore = create_vector_store(files)
 
@@ -70,3 +75,22 @@ def ask(data: QuestionRequest):
     )
 
     return result
+
+@app.get("/generate-roadmap")
+def roadmap():
+
+    global repo_files
+
+    if repo_files is None:
+
+        return {
+            "error": "Load repository first"
+        }
+
+    roadmap = generate_learning_roadmap(
+        repo_files
+    )
+
+    return {
+        "roadmap": roadmap
+    }

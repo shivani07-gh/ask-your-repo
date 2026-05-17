@@ -74,3 +74,22 @@ async function askQuestion() {
         </ul>
     `;
 }
+
+async function generateRoadmap() {
+
+    const response = await fetch(
+        `${API_BASE}/generate-roadmap`
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    document.getElementById(
+        "roadmapBox"
+    ).innerHTML = `
+        <h2>🧠 AI Learning Roadmap</h2>
+
+        <pre>${data.roadmap}</pre>
+    `;
+}

@@ -27,3 +27,10 @@ button {
     background: #222;
     padding: 20px;
 }
+
+#roadmapBox {
+    margin-top: 30px;
+    background: #222;
+    padding: 20px;
+    white-space: pre-wrap;
+}
