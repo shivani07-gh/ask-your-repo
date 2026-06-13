@@ -89,7 +89,9 @@ class DependencyGraphBuilder:
             edges.append({
                 "source": source,
                 "target": target,
-                "weight": weight
+                "weight": weight,
+                "reason": "Detected dependency",
+                "evidence": source_path
             })
 
         return {

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repository Architecture</title>
+
+    <link rel="stylesheet" href="architecture.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <h1>Repository Architecture Explorer</h1>
+    </header>
+
+    <main class="container">
+
+        <section id="graph-area">
+
+            <svg id="connection-svg"></svg>
+
+            <div id="graph-canvas">
+
+                <div id="repository-node" class="repo-node">
+                    📦 Repository
+                </div>
+
+                <div id="layer-container"></div>
+
+            </div>
+
+        </section>
+
+        <aside id="details-panel">
+
+            <h2>Layer Details</h2>
+
+            <div id="details-content">
+                Click any layer to view details.
+            </div>
+
+        </aside>
+
+    </main>
+
+    <script src="architecture.js"></script>
+
+</body>
+</html>
