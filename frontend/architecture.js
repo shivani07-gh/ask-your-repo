@@ -16,37 +16,70 @@ async function loadArchitecture() {
     console.log(data);
 
     window.architectureData = data;
-    renderLayers(data.layers); 
+    renderLayers(data.layers);
+    
+    drawEdges([
+    {
+        source: "Repository",
+        target: "Backend"
+    },
+    {
+        source: "Backend",
+        target: "Frontend"
+    },
+    {
+        source: "Backend",
+        target: "AI"
+    },
+    {
+        source: "Backend",
+        target: "Database"
+    }
+    ]);
 }
 
 
 function renderLayers(layers) {
+        
+    if (!layers.Database) {
+
+            layers.Database = {
+
+                count: 0,
+
+                files: [],
+
+                avg_confidence: 0
+
+            };
+
+        }
 
     layerContainer.innerHTML = "";
 
     const positions = {
 
-    Frontend: {
-        left: "8%",
-        top: "300px"
-    },
+        Backend: {
+            left: "40%",
+            top: "220px"
+        },
 
-    Backend: {
-        left: "40%",
-        top: "300px"
-    },
+        Frontend: {
+            left: "10%",
+            top: "430px"
+        },
 
-    AI: {
-        left: "72%",
-        top: "300px"
-    },
+        AI: {
+            left: "70%",
+            top: "430px"
+        },
 
-    Database: {
-        left: "40%",
-        top: "520px"
-    }
+        Database: {
+            left: "40%",
+            top: "640px"
+        }
 
-};
+    };
     Object.entries(layers).forEach(
 
         ([layerName, info]) => {
@@ -87,6 +120,7 @@ function renderLayers(layers) {
                 card.style.top =
                     pos.top;
             }
+            card.id = `node-${layerName}`;
 
             card.onclick = () => {
 
@@ -109,8 +143,7 @@ function renderLayers(layers) {
 
             };
 
-            layerContainer
-                .appendChild(card);
+            layerContainer.appendChild(card);
 
         }
 
@@ -123,14 +156,13 @@ function showDetails(layerName, info){
 
     let html = `
 
-        <h2>${layerName}</h2>
+    <h2>${layerName}</h2>
 
-        <p>
-            <b>Files:</b>
-            ${info.count}
-        </p>
+    <p><b>Total Files:</b> ${info.count}</p>
 
-        <hr>
+    <p><b>Average Confidence:</b> ${info.avg_confidence ?? 0}</p>
+
+    <hr>
 
     `;
 
@@ -138,26 +170,171 @@ function showDetails(layerName, info){
 
         html += `
 
-            <div
-                style="
-                    padding:10px;
-                    margin-top:8px;
-                    border-radius:8px;
-                    background:#f3f4f6;
-                "
-            >
+    <div
+        style="
+            margin-top:10px;
+            padding:10px;
+            border-radius:10px;
+            background:#f3f4f6;
+            border-left:4px solid #2563eb;
+        "
+    >
 
-                📄 ${file.path}
+        📄 ${file.path}
 
-            </div>
+    </div>
 
-        `;
-
+    `;
     });
 
     detailsContent.innerHTML = html;
 
 }
 
+function drawEdges(edges) {
+
+    const svg = document.getElementById(
+        "connection-svg"
+    );
+    document.getElementById(
+        "repository-node"
+    ).id = "node-Repository";
+
+    // Clear previous drawing
+    svg.innerHTML = "";
+
+    // Create arrow marker
+    const defs = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "defs"
+    );
+
+    const marker = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "marker"
+    );
+
+    marker.setAttribute("id", "arrowhead");
+    marker.setAttribute("viewBox", "0 0 10 10");
+    marker.setAttribute("refX", "8");
+    marker.setAttribute("refY", "5");
+    marker.setAttribute("markerWidth", "8");
+    marker.setAttribute("markerHeight", "8");
+    marker.setAttribute("orient", "auto");
+
+    const arrow = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "path"
+    );
+
+    arrow.setAttribute(
+        "d",
+        "M 0 0 L 10 5 L 0 10 Z"
+    );
+
+    arrow.setAttribute(
+        "fill",
+        "#2563eb"
+    );
+
+    marker.appendChild(arrow);
+    defs.appendChild(marker);
+    svg.appendChild(defs);
+
+    const graph =
+        document.getElementById(
+            "graph-area"
+        );
+
+    const graphRect =
+        graph.getBoundingClientRect();
+
+    edges.forEach(edge => {
+
+        const source =
+            document.getElementById(
+                `node-${edge.source}`
+            );
+
+        const target =
+            document.getElementById(
+                `node-${edge.target}`
+            );
+
+        if (!source || !target) {
+            return;
+        }
+
+        const s =
+            source.getBoundingClientRect();
+
+        const t =
+            target.getBoundingClientRect();
+
+        const x1 =
+            s.left +
+            s.width / 2 -
+            graphRect.left;
+
+        const y1 =
+            s.top +
+            s.height / 2 -
+            graphRect.top;
+
+        const x2 =
+            t.left +
+            t.width / 2 -
+            graphRect.left;
+
+        const y2 =
+            t.top +
+            t.height / 2 -
+            graphRect.top;
+
+        const controlY =
+            (y1 + y2) / 2;
+
+        const path =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "path"
+            );
+
+        path.setAttribute(
+            "d",
+            `
+            M ${x1} ${y1}
+            C ${x1} ${controlY},
+              ${x2} ${controlY},
+              ${x2} ${y2}
+            `
+        );
+
+        path.setAttribute(
+            "fill",
+            "none"
+        );
+
+        path.setAttribute(
+            "stroke",
+            "#2563eb"
+        );
+
+        path.setAttribute(
+            "stroke-width",
+            "4"
+        );
+
+        path.setAttribute(
+            "marker-end",
+            "url(#arrowhead)"
+        );
+
+        svg.appendChild(path);
+
+    });
+    path.classList.add("connection");
+
+}
 
 loadArchitecture();

@@ -58,7 +58,7 @@ class FileRoleClassifier:
         r"uvicorn",
         r"nestjs",
         r"koa",
-        r"gin",
+        #r'github\.com/gin-gonic/gin',
         r"fiber",
         r"requestmapping",
     ]
