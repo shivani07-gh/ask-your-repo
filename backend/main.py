@@ -32,6 +32,7 @@ from backend.database.mongodb import connect_db
 import backend.routes.repos as repos
 import backend.routes.ask as ask
 import backend.routes.roadmap as roadmap
+import backend.routes.auth as auth
 
 from backend.routes.architecture_routes import (
     router as architecture_router
@@ -94,6 +95,10 @@ app.include_router(
 
 app.include_router(
     architecture_router
+)
+
+app.include_router(
+    auth.router
 )
 
 # app.include_router(dependencies.router)
