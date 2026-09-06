@@ -430,8 +430,9 @@ This project is developed for educational and experimental purposes.
 
 ------------------------------------------------------------------------
 
-::: {align="center"}
+
 ### AskYourRepo
 
 **Understand a codebase before you change it.**
-:::
+
+
