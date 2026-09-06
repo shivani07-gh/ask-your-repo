@@ -2,113 +2,125 @@
 
 ### AI-Powered GitHub Repository Understanding & Architecture Analysis
 
-AskYourRepo is an AI-powered developer tool that helps engineers understand unfamiliar GitHub repositories faster.
+AskYourRepo is an AI-powered developer tool that helps engineers
+understand unfamiliar GitHub repositories faster.
 
-It combines **Retrieval-Augmented Generation (RAG)**, **vector search**, **dependency analysis**, and **architecture visualization** to turn a repository into an interactive, searchable knowledge base.
+It combines **Retrieval-Augmented Generation (RAG), vector search,
+dependency analysis, architecture visualization, and repository-specific
+learning roadmaps** into a single workflow.
 
-Instead of manually navigating hundreds of files, developers can load a repository, ask questions about its implementation, visualize its architecture, and generate a learning roadmap from the codebase itself.
+Instead of manually navigating a large codebase, developers can load a
+repository, ask questions about its implementation, explore its
+architecture, trace dependencies, and generate a learning roadmap from
+the repository itself.
 
----
+------------------------------------------------------------------------
 
 ## Overview
 
-Understanding an unfamiliar repository usually requires:
+Understanding an unfamiliar codebase often requires manually exploring
+files, tracing dependencies, identifying architectural components, and
+locating the implementation of specific features.
 
-- Exploring large numbers of files
-- Finding where specific functionality is implemented
-- Tracing dependencies between modules
-- Understanding the overall architecture
-- Identifying technologies and components
-- Figuring out what to learn before modifying the project
+AskYourRepo streamlines this process by turning a GitHub repository into
+an interactive, searchable knowledge base.
 
-AskYourRepo automates these steps through a unified interface.
+The system allows developers to:
 
-**Repository → Code Understanding → Retrieval → Architecture → Insights**
+-   Ask natural-language questions about a repository
+-   Retrieve relevant source-code context
+-   Explore the repository architecture
+-   Analyze dependencies between components
+-   Classify files according to their architectural role
+-   Generate a repository-specific learning roadmap
 
----
+------------------------------------------------------------------------
 
-## Core Capabilities
+## Key Features
 
-### 1. Repository-Aware AI Q&A
+### AI-Powered Repository Q&A
 
-Load a GitHub repository and ask questions in natural language.
+Ask natural-language questions about the selected repository and receive
+answers grounded in the actual source code.
 
-Examples:
+Example questions:
 
-```text
-"How does authentication work?"
+-   How does authentication work?
+-   Where is the API request handled?
+-   How is the database connected?
+-   Where is the RAG pipeline implemented?
 
-"Where is the API request handled?"
+### Retrieval-Augmented Generation
 
-"How is the database connected?"
+The repository source code is processed into embeddings and stored in a
+vector database. When a user asks a question, relevant code is retrieved
+and provided as context to the language model.
 
-"Which files implement the RAG pipeline?"
-
-The system retrieves relevant code from the repository before generating the answer, making responses specific to the selected codebase.
-
-2. Retrieval-Augmented Generation
-
-The repository source code is processed into embeddings and stored in a vector database.
-
-When a question is asked:
-
+``` text
 User Question
       ↓
-Embedding
+Query Embedding
       ↓
 Vector Similarity Search
       ↓
 Relevant Code Chunks
       ↓
-LLM
+LLM + Retrieved Context
       ↓
 Context-Aware Answer
+```
 
-This allows the model to answer questions using the actual repository context rather than relying only on its pretrained knowledge.
+This enables repository-specific responses instead of relying only on
+general model knowledge.
 
-3. Architecture Visualization
+### Architecture Visualization
 
-AskYourRepo analyzes repository files and classifies them into architectural layers such as:
+AskYourRepo analyzes repository files and organizes them into
+architectural layers such as:
 
-Frontend
-Backend
-AI
-Database
+-   Frontend
+-   Backend
+-   AI
+-   Database
 
-It then builds an interactive architecture graph showing relationships between the major components of the repository.
+The system then generates an interactive architecture graph that helps
+developers understand how major components of the repository relate to
+each other.
 
-Selecting a layer provides additional information about the files belonging to that component.
+### Dependency Analysis
 
-4. Dependency Analysis
+Source files are analyzed to extract imports and dependencies.
 
-The system extracts imports and dependencies from source files and uses them to identify relationships between different parts of the repository.
+This helps developers understand relationships between modules and
+identify how different architectural layers interact.
 
-This helps developers understand:
+### File Role Classification
 
-Which component depends on what?
-Where does a particular module connect?
-How are different architectural layers related?
-5. File Role Classification
+Repository files are classified according to their likely architectural
+role using signals such as:
 
-Repository files are analyzed and classified according to their likely architectural role.
+-   File path
+-   File extension
+-   Source-code patterns
+-   Framework-specific indicators
+-   Architectural keywords
 
-The classification system considers:
+Classification confidence is also maintained to support more reliable
+architecture analysis.
 
-File path
-File extension
-Source-code patterns
-Framework-specific indicators
-Architectural keywords
+### Repository Learning Roadmap
 
-The resulting classification includes confidence information, allowing the architecture engine to build a more meaningful representation of the repository.
+AskYourRepo can generate a structured learning roadmap based on the
+technologies, components, and structure detected in the repository.
 
-6. Repository Learning Roadmap
+This provides developers with a practical sequence for understanding an
+unfamiliar project.
 
-AskYourRepo can generate a structured learning roadmap based on the technologies, components, and source files present in the repository.
+------------------------------------------------------------------------
 
-This provides developers with a practical sequence for understanding an unfamiliar project.
+## System Architecture
 
-System Architecture
+``` text
                          GitHub Repository
                                 │
                                 ▼
@@ -116,6 +128,7 @@ System Architecture
                        │ Repository Loader │
                        └────────┬─────────┘
                                 │
+                                ▼
                          Source Code Files
                                 │
                 ┌───────────────┴────────────────┐
@@ -126,7 +139,7 @@ System Architecture
         └────────┬────────┘              └─────────┬──────────┘
                  │                                 │
                  ▼                                 ▼
-          Code Chunking                    File Classification
+          Code Processing                  File Classification
                  │                                 │
                  ▼                                 ▼
            Embeddings                     Dependency Extraction
@@ -142,16 +155,69 @@ System Architecture
               ▼                  ▼                  ▼
           AI Q&A          Architecture        Learning
                           Visualization        Roadmap
-Tech Stack
-Layer	Technologies
-Backend	Python, FastAPI, Pydantic
-AI / LLM	LangChain, Large Language Models
-Retrieval	Embeddings, FAISS, Vector Search, RAG
-Repository Integration	GitHub API, PyGithub
-Frontend	HTML, CSS, JavaScript
-Visualization	SVG
-Configuration	Python-dotenv
-Project Structure
+```
+
+------------------------------------------------------------------------
+
+## RAG Pipeline
+
+``` text
+Repository Files
+      ↓
+File Processing
+      ↓
+Text Chunking
+      ↓
+Embeddings
+      ↓
+FAISS Vector Store
+      ↓
+Similarity Retrieval
+      ↓
+Relevant Context
+      ↓
+LLM
+      ↓
+Generated Answer
+```
+
+------------------------------------------------------------------------
+
+## Architecture Analysis Pipeline
+
+``` text
+Repository Files
+      ↓
+File Role Classification
+      ↓
+Architectural Layers
+      ↓
+Dependency Extraction
+      ↓
+Dependency Graph
+      ↓
+Interactive Architecture Visualization
+```
+
+------------------------------------------------------------------------
+
+## Tech Stack
+
+  Category                 Technologies
+  ------------------------ ---------------------------------------
+  Backend                  Python, FastAPI, Pydantic
+  AI / LLM                 LangChain, Large Language Models
+  Retrieval                Embeddings, FAISS, Vector Search, RAG
+  Repository Integration   GitHub API, PyGithub
+  Frontend                 HTML, CSS, JavaScript
+  Visualization            SVG
+  Configuration            Python-dotenv
+
+------------------------------------------------------------------------
+
+## Project Structure
+
+``` text
 AskYourRepo/
 │
 ├── backend/
@@ -176,98 +242,196 @@ AskYourRepo/
 ├── requirements.txt
 ├── .env
 └── README.md
-API
-Endpoint	Method	Purpose
-/load-repo	POST	Loads and processes the selected GitHub repository
-/ask	POST	Answers questions using repository context
-/users/{username}/repos	GET	Retrieves repositories for a GitHub user
-/visualize	GET	Generates repository architecture data
-/generate-roadmap	GET	Generates a repository-specific learning roadmap
-Supported Source Files
+```
+
+------------------------------------------------------------------------
+
+## API Endpoints
+
+  ---------------------------------------------------------------------------
+  Endpoint                    Method                  Description
+  --------------------------- ----------------------- -----------------------
+  `/load-repo`                POST                    Load and process a
+                                                      GitHub repository
+
+  `/ask`                      POST                    Ask questions using
+                                                      repository context
+
+  `/users/{username}/repos`   GET                     Retrieve repositories
+                                                      for a GitHub user
+
+  `/visualize`                GET                     Generate repository
+                                                      architecture
+
+  `/generate-roadmap`         GET                     Generate a
+                                                      repository-specific
+                                                      learning roadmap
+  ---------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+## Supported Source Files
 
 The current repository loader supports:
 
+``` text
 Python       .py
 JavaScript   .js
 TypeScript   .ts
 React        .jsx / .tsx
 Java         .java
 C++          .cpp
-Getting Started
-Prerequisites
-Python 3.10+
-Git
-GitHub Personal Access Token
-LLM API key
-Installation
+```
+
+------------------------------------------------------------------------
+
+## Getting Started
+
+### Prerequisites
+
+-   Python 3.10+
+-   Git
+-   GitHub Personal Access Token
+-   LLM API Key
+
+### Installation
+
+Clone the repository:
+
+``` bash
 git clone YOUR_GITHUB_REPOSITORY_URL
 cd AskYourRepo
+```
 
-Create and activate a virtual environment:
+Create a virtual environment.
 
-Windows
+**Windows**
+
+``` bash
 python -m venv venv
 venv\Scripts\activate
-Linux / macOS
+```
+
+**Linux / macOS**
+
+``` bash
 python3 -m venv venv
 source venv/bin/activate
+```
 
 Install dependencies:
 
+``` bash
 pip install -r requirements.txt
+```
 
-Create a .env file:
+### Environment Variables
 
+Create a `.env` file in the project root:
+
+``` env
 GITHUB_TOKEN=your_github_token
 OPENAI_API_KEY=your_openai_api_key
+```
 
-Start the backend:
+### Run the Backend
 
+``` bash
 uvicorn backend.main:app --reload
+```
 
 The API will be available at:
 
+``` text
 http://127.0.0.1:8000
+```
 
-Swagger documentation:
+Interactive API documentation:
 
+``` text
 http://127.0.0.1:8000/docs
-Example Workflow
-1. Select a GitHub repository
-            ↓
-2. Repository files are fetched
-            ↓
-3. Source code is processed
-            ↓
-4. Embeddings are generated
-            ↓
-5. Vector store is created
-            ↓
-6. Repository becomes searchable
-            ↓
-7. Ask questions about the codebase
-            ↓
-8. Explore generated architecture
-            ↓
-9. Follow the generated learning roadmap
-Why This Project?
+```
 
-AskYourRepo combines multiple developer-focused AI capabilities into one workflow:
+### Run the Frontend
 
-Code Retrieval + RAG + Dependency Analysis + Architecture Understanding + Learning Assistance
+Serve the frontend using a local web server and open the application in
+your browser.
 
-The goal is to reduce the time required to understand an unfamiliar codebase and make repository exploration more accessible for developers.
+------------------------------------------------------------------------
 
-Future Scope
-File-level dependency graphs
-AST-based code analysis
-Support for additional programming languages
-Incremental repository indexing
-Repository complexity and code-quality analysis
-More detailed architecture inference
-Improved cross-file reasoning
-License
+## Workflow
+
+``` text
+Select GitHub Repository
+          ↓
+Fetch Repository Files
+          ↓
+Process Source Code
+          ↓
+   ┌──────┴───────┐
+   ↓              ↓
+RAG Pipeline   Architecture Analysis
+   ↓              ↓
+Embeddings     File Classification
+   ↓              ↓
+Vector Store   Dependency Analysis
+   ↓              ↓
+Code Retrieval Architecture Graph
+   └──────┬───────┘
+          ↓
+   Developer Interface
+          ↓
+   ┌──────┼───────┐
+   ↓      ↓       ↓
+  Q&A  Architecture Roadmap
+```
+
+------------------------------------------------------------------------
+
+## Use Cases
+
+-   Understanding unfamiliar codebases
+-   Developer onboarding
+-   Exploring open-source projects
+-   Finding implementation details quickly
+-   Tracing dependencies
+-   Visualizing project architecture
+-   Learning a new repository faster
+
+------------------------------------------------------------------------
+
+## Why AskYourRepo?
+
+AskYourRepo brings multiple developer workflows into one system:
+
+**Code Search + RAG + Dependency Analysis + Architecture Understanding +
+Learning Assistance**
+
+The goal is to reduce the time and effort required to understand an
+unfamiliar codebase before making changes to it.
+
+------------------------------------------------------------------------
+
+## Future Scope
+
+-   AST-based code analysis
+-   File-level dependency graphs
+-   Support for additional programming languages
+-   Incremental repository indexing
+-   Repository complexity analysis
+-   Automated code-quality insights
+-   Improved cross-file reasoning
+
+------------------------------------------------------------------------
+
+## License
 
 This project is developed for educational and experimental purposes.
 
-AskYourRepo — Understand a codebase before you change it.
+------------------------------------------------------------------------
+
+::: {align="center"}
+### AskYourRepo
+
+**Understand a codebase before you change it.**
+:::
